@@ -17,41 +17,21 @@ S = [
   [[8, 5], 1]
 ]
 
-Sother = [
-  [[1, 1], 0],
-  [[2, 2], 0],
+def σ(x):
+  return 1.0 / (1.0 + math.exp(-x))
 
-  [[4, 4], 1],
-  [[1, 4], 1],
-  [[5, 5], 1],
-]
-
-Snand = [
-  [[0, 0], 1],
-  [[0, 1], 1],
-  [[1, 0], 1],
-  [[1, 1], 0],
-]
-
-def sigmoid(x):
-  return 1.0 / (1.0 + math.exp(x))
-
-def sigmoidPrime(x):
-  return sigmoid(x) * (1 - sigmoid(x))
+def σPrime(x):
+  return σ(x) * (1 - σ(x))
 
 def calculateOutput(x, w, b):
   Σ = b
   for i in range(len(x)):
     Σ += x[i] * w[i]
 
-  if Σ >= 0:
-    return 1
-  else:
-    return 0
-  # return sigmoid(Σ)
+  return σ(Σ)
 
 def deltaWeight(ε, c, o, x):
-  return ε * (c - o) * x #* sigmoidPrime(o)
+  return ε * (c - o) * x * σPrime(o)
 
 def errorRate(S, w, b):
   Σ = b
@@ -64,7 +44,9 @@ def train(ε, epochs, S):
   w = [0, 0]
   b = 0
 
+  epoch = 0
   for i in range(epochs + 1):
+    epoch += 1
     for example in S:
       x = example[0]
       o = calculateOutput(x, w, b)
@@ -73,7 +55,8 @@ def train(ε, epochs, S):
       b += deltaWeight(ε, c, o, 1)
       for i in range(len(w)):
         w[i] = w[i] + deltaWeight(ε, c, o, x[i])
-    print('Epoch {index} --- Error rate: {error}'.format(index=i+1, error=errorRate(S, w, b)))
+    
+    print('Epoch {} --- Error rate: {}'.format(epoch, errorRate(S, w, b)))
 
   return (w, b)
 
@@ -84,4 +67,4 @@ print(w)
 ya = -1 * (b / w[1]) / (b / w[0])
 yb = (-1 * b) / w[1]
 
-print(f'Line equation: y = {ya}x + {yb}')
+print('Line equation: y = {a}x + {b}'.format(a=ya, b=yb))
