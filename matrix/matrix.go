@@ -23,6 +23,7 @@ func Initialize[T Number](n, m int, f func(i, j int) T) *Matrix[T] {
 			A.Set(i, j, f(i, j))
 		}
 	}
+	return A
 }
 
 func FromVector[T Number](t []T, column bool) (A *Matrix[T]) {

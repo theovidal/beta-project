@@ -49,6 +49,18 @@ func (A *Matrix[T]) Scale(scale T) {
 	}
 }
 
+func (A *Matrix[T]) MultiplyLeft(B *Matrix[T]) error {
+	C, err := Multiply(B, A)
+	if err != nil {
+		return err
+	}
+
+	A.t = C.t
+	A.n = C.n
+	A.m = C.m
+	return nil
+}
+
 func (A *Matrix[T]) Multiply(B *Matrix[T]) error {
 	C, err := Multiply(A, B)
 	if err != nil {
