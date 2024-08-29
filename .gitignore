@@ -1,2 +1,11 @@
+# Editor folders
 .vscode
 .idea/
+
+# Raw data
+problems_*
+
+# Machine learning models and training process
+logs
+# Exclude all models except the "best" ones, whose names don't contain any metrics
+models/*[0-9]*
